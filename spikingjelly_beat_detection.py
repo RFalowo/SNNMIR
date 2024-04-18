@@ -192,17 +192,21 @@ class RSNNBeatDetection(pl.LightningModule):
 def main():
     args = get_args()
 
-    dataset_args = {
-        'audio_dir': 'data/Data/genres_original',
-        'beat_dir': 'data/gtzan_tempo_beat/beats',
-        'normalization_file': 'normalizationMM_values.txt',
-        'gaussian_width': 2
-    }
+
 
     if args.encoding == "lyon":
         transform = lyon_cochleagram
     else:
         raise ValueError(f"Unsupported encoding method: {args.encoding}")
+
+    dataset_args = {
+        'audio_dir': 'data/Data/genres_original',
+        'beat_dir': 'data/gtzan_tempo_beat/beats',
+        'normalization_file': 'normalizationMM_values.txt',
+        'transform': transform,
+        'gaussian_width': 2
+    }
+
     if args.model == "RSNN":
         model = RSNNBeatDetection(optimizer_name=args.optimizer, learning_rate=args.learning_rate, transform=transform)
 
