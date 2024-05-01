@@ -24,6 +24,7 @@ from spikingjelly.activation_based import neuron, surrogate, layer, functional
 from GTZANBEAT import GTZANDataset
 from torch.utils.data import DataLoader
 from pytorch_lightning.loggers import WandbLogger
+from normalization import TEBN
 #transfrom = T.MFCC(n_mfcc=96, melkwargs={'n_fft': 2048, 'hop_length': 512, 'n_mels': 96, 'center': False})
 # Adjust this transform according to your needs. For beat detection, Mel Spectrogram can be very useful.
 
@@ -35,22 +36,27 @@ def get_args():
     parser.add_argument("--epochs", type=int, default=30, help="Number of epochs")
     parser.add_argument("--use_wandb", action="store_true", help="Use Weights & Biases for logging (default: False)")
     parser.add_argument("--encoding", type=str, default="lyon", choices=["lyon"], help="Audio encoding method (default: 'lyon')")
-
+    parser.add_argument("--device", type=str, default="mps", help="Device to use ('cuda' or 'mps')")
     return parser.parse_args()
 
 
 class RSNNBeatDetection(pl.LightningModule):
-    def __init__(self, optimizer_name="adam", learning_rate=0.001, transform=None):
+    def __init__(self, optimizer_name="adam", learning_rate=0.001, transform=None,):
         super().__init__()
+
         self.optimizer_name = optimizer_name
         self.learning_rate = learning_rate
         print(f"Transform argument: {transform}")
         self.transform = transform
+
+        self.TEBN = TEBN(96, max_timesteps=30000 ,device=torch.device('mps'))
+
+
         # Defining the RSNN architecture. Adjust sizes and parameters according to your dataset and task.
         self.S1 = nn.Sequential(
-            layer.Linear(96, 256, step_mode='m'),
-            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4, v_reset=0.2),
-        )
+            layer.Linear(96, 96, step_mode='m'),
+            neuron.LIFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True
+        ))
         self.rsnn_block = layer.LinearRecurrentContainer(
                 neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4, v_reset=0.2),
                 in_features=256,
@@ -60,17 +66,22 @@ class RSNNBeatDetection(pl.LightningModule):
         # self.scnn = layer.Conv1d(1,1, 3)
         # self.AP = layer.AdaptiveAvgPool1d(2)
         self.S2 = nn.Sequential(
-            layer.Linear(256, 128, step_mode='m'),
-            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4, v_reset=0.2),
+            layer.Linear(96, 96, step_mode='m'),
+            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
         )
         self.S3 = nn.Sequential(
-            layer.Linear(128, 64, step_mode='m'),
-            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4, v_reset=0.2),
+            layer.Linear(96, 32, step_mode='m'),
+            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
+        )
+        self.S4 = nn.Sequential(
+            layer.Linear(32, 16, step_mode='m'),
+            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
         )
         self.output = nn.Sequential(
-            layer.Linear(64, 1, step_mode='m'),
-            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4, v_reset=0.2),
+            layer.Linear(16, 1, step_mode='m'),
+            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
         )
+
 
        #final output spiking layer with one output neuron that will spike when the network predicts a beat
 
@@ -86,16 +97,22 @@ class RSNNBeatDetection(pl.LightningModule):
         # x = torch.rand(x.shape).to(x.device)
         v = x.cpu().squeeze().detach().numpy()
         x0 = v
+        x = self.TEBN(x)
+        v = x.cpu().squeeze().detach().numpy()
+
         x = self.S1(x)  # First spiking layer
         # print('S1: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
-        x = self.rsnn_block(x)  # RSNN block
+        # x = self.rsnn_block(x)  # RSNN block
         # print ('s2: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
         x = self.S2(x)
         # print ('s3: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
         x = self.S3(x)
+        # print ('s4: ',float(x.sum()), x.shape,x.min(),x.max())
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.S4(x)
         # print ('s4: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
         x = self.output(x)
@@ -109,6 +126,7 @@ class RSNNBeatDetection(pl.LightningModule):
         functional.reset_net(self.rsnn_block)
         functional.reset_net(self.S2)
         functional.reset_net(self.S3)
+        functional.reset_net(self.S4)
         functional.reset_net(self.output)
         return x
 
@@ -149,8 +167,8 @@ class RSNNBeatDetection(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
             x, y = batch
-            x = x.to(self.device)
-            y = y.to(self.device)
+            # x = x.to(self.device)
+            # y = y.to(self.device)
             y = y.permute(1, 0)  # Flatten the target tensor
             y_hat = self.forward(x)  # Flatten the output tensor
             predicted_spikes = y_hat  # Predicted spikes are the output tensor values greater than 0
@@ -209,7 +227,8 @@ def main():
 
     if args.model == "RSNN":
         model = RSNNBeatDetection(optimizer_name=args.optimizer, learning_rate=args.learning_rate, transform=transform)
-
+        model.to(args.device)
+        model.TEBN.to(args.device)
     train_dataset = GTZANDataset(**dataset_args)
     val_dataset = GTZANDataset(**dataset_args)
     test_dataset = GTZANDataset(**dataset_args)
@@ -219,7 +238,7 @@ def main():
     test_loader = DataLoader(test_dataset, batch_size=1)
 
     logger = WandbLogger(project="SNN_Beat_Detection", log_model="all") if args.use_wandb else False
-    trainer = pl.Trainer(max_epochs=args.epochs, logger=logger, callbacks=[ModelCheckpoint(monitor="train_loss")])
+    trainer = pl.Trainer(max_epochs=args.epochs, logger=logger, callbacks=[ModelCheckpoint(monitor="train_loss")], accelerator='mps', devices=1)
     trainer.fit(model, train_loader, val_loader)
     trainer.test(model, test_loader)
 

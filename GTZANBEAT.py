@@ -71,7 +71,10 @@ class GTZANDataset(torch.utils.data.Dataset):
                 beat_tensor[start:end] = torch.exp(-0.5 * (x / gaussian_width) ** 2)
 
         audio = torch.tensor(transformed_data, dtype=torch.float32).permute(1, 0)
-        audio = F.normalize(audio, dim=0)
+        min_val = torch.min(audio)
+        max_val = torch.max(audio)
+        audio = (audio - min_val) / (max_val - min_val)
+        audio = audio.pow(0.5)
         return audio, beat_tensor
 
     def load_normalization_values(self):
@@ -82,6 +85,12 @@ class GTZANDataset(torch.utils.data.Dataset):
             min_mfcc = torch.tensor(eval(lines[0].split(': ')[1]))
             max_mfcc = torch.tensor(eval(lines[1].split(': ')[1]))
         return min_mfcc, max_mfcc
+
+    def normalize_data(data):
+        min_val = torch.min(data)
+        max_val = torch.max(data)
+        data_normalized = (data - min_val) / (max_val - min_val)
+        return data_normalized
 
 #lyon cochleagram tranform class
 class LyconCoch(object):
