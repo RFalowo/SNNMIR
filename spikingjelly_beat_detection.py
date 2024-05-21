@@ -32,7 +32,7 @@ def get_args():
     parser = ArgumentParser(description="SNN Beat Detection")
     parser.add_argument("--optimizer", type=str, default="adam", choices=["adam", "sgd"], help="Optimizer to use; 'adam' or 'sgd'")
     parser.add_argument("--learning_rate", type=float, default=0.1, help="Learning rate")
-    parser.add_argument("--model", type=str, default="RSNN", choices=["plain", "stateful", "feedback"], help="Model to use; 'plain', 'stateful', or 'feedback'")
+    parser.add_argument("--model", type=str, default="Conv1D", choices=["Conv1D", "Linear", "RSNN"], help="Model to use; 'plain', 'stateful', or 'feedback'")
     parser.add_argument("--epochs", type=int, default=30, help="Number of epochs")
     parser.add_argument("--use_wandb", action="store_true", help="Use Weights & Biases for logging (default: False)")
     parser.add_argument("--encoding", type=str, default="lyon", choices=["lyon"], help="Audio encoding method (default: 'lyon')")
@@ -41,7 +41,7 @@ def get_args():
 
 
 class RSNNBeatDetection(pl.LightningModule):
-    def __init__(self, optimizer_name="adam", learning_rate=0.001, transform=None,):
+    def __init__(self, optimizer_name="adam", learning_rate=0.01, transform=None,):
         super().__init__()
 
         self.optimizer_name = optimizer_name
@@ -58,7 +58,7 @@ class RSNNBeatDetection(pl.LightningModule):
             neuron.LIFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True
         ))
         self.rsnn_block = layer.LinearRecurrentContainer(
-                neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4, v_reset=0.2),
+                neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4),
                 in_features=256,
                 out_features=128,
                 step_mode='s',            )
@@ -203,12 +203,110 @@ class RSNNBeatDetection(pl.LightningModule):
         dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt',gaussian_width=2)
         return DataLoader(dataset, batch_size=1)
 
+class Conv1DSNN(pl.LightningModule):
+    def __init__(self, T: int, channels: int, optimizer_name="adam", learning_rate=0.01):
+        super().__init__()
+
+        self.T = T
+        self.optimizer_name = optimizer_name
+        self.learning_rate = learning_rate
+
+        self.conv_fc = nn.Sequential(
+            layer.Conv1d(channels, channels, kernel_size=3, padding=1, bias=False),
+            layer.BatchNorm1d(channels),
+            neuron.IFNode(surrogate_function=surrogate.ATan()),
+
+            layer.Conv1d(channels, channels, kernel_size=3, padding=1, bias=False),
+            layer.BatchNorm1d(channels),
+            neuron.IFNode(surrogate_function=surrogate.ATan()),
+
+            layer.Flatten(),
+            layer.Linear(channels * 7 * 7, channels * 4 * 4, bias=False),
+            neuron.IFNode(surrogate_function=surrogate.ATan()),
+
+            layer.Linear(channels * 4 * 4, 1, bias=False),
+            neuron.IFNode(surrogate_function=surrogate.ATan()),
+        )
+        self.Conv1 = nn.Sequential(
+            layer.Conv1d(channels, 64, kernel_size=3, padding=1, bias=False),
+            layer.BatchNorm1d(64),
+            neuron.IFNode(surrogate_function=surrogate.ATan()),
+            )
+        self.Conv2 = nn.Sequential(
+            layer.Conv1d(64, 32, kernel_size=3, padding=1, bias=False),
+            layer.BatchNorm1d(32),
+            neuron.IFNode(surrogate_function=surrogate.ATan()),
+        )
+        self.Conv3 = nn.Sequential(
+            layer.Conv1d(32, 16, kernel_size=3, padding=1, bias=False),
+            layer.BatchNorm1d(16),
+            neuron.IFNode(surrogate_function=surrogate.ATan()),
+        )
+        self.Output = nn.Sequential(
+            layer.Conv1d(16, 1, kernel_size=3, padding=1, bias=False),
+            layer.BatchNorm1d(1),
+            neuron.IFNode(surrogate_function=surrogate.ATan())
+        )
 
 
+    def forward(self, x):
+        # Assuming x is initially [batch_size, channels, MFCC features, time steps]
+        # Remove the channels dimension if it's always 1 and not needed
+        x = x.squeeze(1)  # Now x is [batch_size, MFCC features, time steps]
+
+        # Permute to put time steps first for iteration
+        x = x.permute(2, 1, 0)  # Now x is [time steps, batch_size, MFCC features]
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.Conv1(x)
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.Conv2(x)
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.Conv3(x)
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.Output(x)
+        v = x.cpu().squeeze().detach().numpy()
+        x = x.squeeze(2) # Remove the last dimension
+
+        functional.reset_net(self.Conv1)
+        functional.reset_net(self.Conv2)
+        functional.reset_net(self.Conv3)
+        functional.reset_net(self.Output)
+        return x
+
+    def training_step(self, batch, batch_idx):
+        x, y = batch
+        # x = x.to(self.device)
+        # y = y.to(self.device)
+        y = y.permute(1, 0)  # Flatten the target tensor
+        y_hat = self.forward(x)  # Flatten the output tensor
+        loss = F.mse_loss(y_hat, y)
+        self.log('train_loss', loss)
+        return loss
+
+    def configure_optimizers(self):
+        if self.optimizer_name == "adam":
+            optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        elif self.optimizer_name == "sgd":
+            optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.9)
+        return optimizer
+
+    def train_dataloader(self):
+        # Make sure to point 'dataset_path' to your GTZAN dataset location
+        dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt',gaussian_width=2)
+        return DataLoader(dataset, batch_size=1, shuffle=True)
+
+    def val_dataloader(self):
+        dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt',gaussian_width=2)
+        return DataLoader(dataset, batch_size=1)
+
+    def test_dataloader(self):
+        dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt',gaussian_width=2)
+        return DataLoader(dataset, batch_size=1)
 
 
 def main():
     args = get_args()
+
 
 
 
@@ -229,6 +327,10 @@ def main():
         model = RSNNBeatDetection(optimizer_name=args.optimizer, learning_rate=args.learning_rate, transform=transform)
         model.to(args.device)
         model.TEBN.to(args.device)
+
+    elif args.model == "Conv1D":
+        model = Conv1DSNN(T=30000, channels=96, optimizer_name=args.optimizer, learning_rate=args.learning_rate)
+
     train_dataset = GTZANDataset(**dataset_args)
     val_dataset = GTZANDataset(**dataset_args)
     test_dataset = GTZANDataset(**dataset_args)
@@ -236,6 +338,8 @@ def main():
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=1)
     test_loader = DataLoader(test_dataset, batch_size=1)
+
+    args.use_wandb = True
 
     logger = WandbLogger(project="SNN_Beat_Detection", log_model="all") if args.use_wandb else False
     trainer = pl.Trainer(max_epochs=args.epochs, logger=logger, callbacks=[ModelCheckpoint(monitor="train_loss")], accelerator='mps', devices=1)
