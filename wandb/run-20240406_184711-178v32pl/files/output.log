@@ -1,0 +1,56 @@
+INFO:pytorch_lightning.callbacks.model_summary:
+  | Name       | Type                     | Params
+--------------------------------------------------------
+0 | S1         | LIFNode                  | 0
+1 | rsnn_block | LinearRecurrentContainer | 3.2 K
+2 | output     | Sequential               | 41
+3 | S2         | IFNode                   | 0
+--------------------------------------------------------
+3.3 K     Trainable params
+0         Non-trainable params
+3.3 K     Total params
+0.013     Total estimated model params size (MB)
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+Epoch 0:   0%|          | 0/200 [00:00<?, ?it/s]
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 580, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 987, in _run
+    results = self._run_stage()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1033, in _run_stage
+    self.fit_loop.run()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py", line 205, in run
+    self.advance()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py", line 363, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 140, in run
+    self.advance(data_fetcher)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 212, in advance
+    batch, _, __ = next(data_fetcher)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fetchers.py", line 133, in __next__
+    batch = super().__next__()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fetchers.py", line 60, in __next__
+    batch = next(self.iterator)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/utilities/combined_loader.py", line 341, in __next__
+    out = next(self._iterator)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/utilities/combined_loader.py", line 78, in __next__
+    out[i] = next(self.iterators[i])
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 631, in __next__
+    data = self._next_data()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/dataloader.py", line 675, in _next_data
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/_utils/fetch.py", line 54, in fetch
+    return self.collate_fn(data)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 277, in default_collate
+    return collate(batch, collate_fn_map=default_collate_fn_map)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 144, in collate
+    return [collate(samples, collate_fn_map=collate_fn_map) for samples in transposed]  # Backwards compatibility.
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 144, in <listcomp>
+    return [collate(samples, collate_fn_map=collate_fn_map) for samples in transposed]  # Backwards compatibility.
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 121, in collate
+    return collate_fn_map[elem_type](batch, collate_fn_map=collate_fn_map)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/data/_utils/collate.py", line 174, in collate_tensor_fn
+    return torch.stack(batch, 0, out=out)
+RuntimeError: stack expects each tensor to be equal size, but got [1, 40, 1293] at entry 0 and [1, 40, 1292] at entry 3

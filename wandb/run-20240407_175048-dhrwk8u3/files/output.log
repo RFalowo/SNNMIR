@@ -1,0 +1,43 @@
+INFO:pytorch_lightning.callbacks.model_summary:
+  | Name       | Type                     | Params
+--------------------------------------------------------
+0 | S1         | Sequential               | 3.3 K
+1 | rsnn_block | LinearRecurrentContainer | 12.9 K
+2 | output     | Sequential               | 81
+3 | S2         | IFNode                   | 0
+--------------------------------------------------------
+16.2 K    Trainable params
+0         Non-trainable params
+16.2 K    Total params
+0.065     Total estimated model params size (MB)
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+Epoch 0:   0%|          | 0/998 [00:00<?, ?it/s] 25586.328125 torch.Size([1293, 1, 40]) tensor(0.1845, device='mps:0') tensor(0.8584, device='mps:0')
+277.0 torch.Size([1293, 1, 80]) tensor(0., device='mps:0', grad_fn=<MinBackward1>) tensor(1., device='mps:0', grad_fn=<MaxBackward1>)
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py:44: Detected KeyboardInterrupt, attempting graceful shutdown...
+Traceback (most recent call last):
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 2195, in <module>
+    main()
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 2177, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 1489, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 1496, in _exec
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/_pydev_imps/_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 185, in <module>
+    main()
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 181, in main
+    trainer.fit(model)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 754, in test
+    return call._call_and_handle_interrupt(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 794, in _test_impl
+    results = self._run(model, ckpt_path=ckpt_path)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 937, in _run
+    _verify_loop_configurations(self)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py", line 42, in _verify_loop_configurations
+    __verify_eval_loop_configuration(model, "test")
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py", line 110, in __verify_eval_loop_configuration
+    raise MisconfigurationException(f"No `{step_name}()` method defined to run `Trainer.{trainer_method}`.")

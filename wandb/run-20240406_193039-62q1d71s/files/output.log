@@ -1,0 +1,17 @@
+INFO:pytorch_lightning.callbacks.model_summary:
+  | Name       | Type                     | Params
+--------------------------------------------------------
+0 | S1         | Sequential               | 1.6 K
+1 | rsnn_block | LinearRecurrentContainer | 3.2 K
+2 | output     | Sequential               | 41
+3 | S2         | IFNode                   | 0
+--------------------------------------------------------
+4.9 K     Trainable params
+0         Non-trainable params
+4.9 K     Total params
+0.020     Total estimated model params size (MB)
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+
+Epoch 0:   0%|          | 0/998 [00:00<?, ?it/s] -462.0933837890625
+0.0
+0.0

@@ -1,0 +1,179 @@
+INFO:pytorch_lightning.callbacks.model_summary:
+  | Name       | Type                     | Params
+--------------------------------------------------------
+0 | S1         | IFNode                   | 0
+1 | rsnn_block | LinearRecurrentContainer | 3.2 K
+2 | output     | Sequential               | 41
+3 | S2         | IFNode                   | 0
+--------------------------------------------------------
+3.3 K     Trainable params
+0         Non-trainable params
+3.3 K     Total params
+0.013     Total estimated model params size (MB)
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py:298: The number of training batches (20) is smaller than the logging interval Trainer(log_every_n_steps=50). Set a lower value for log_every_n_steps if you want to see logs for the training epoch.
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torchaudio/functional/functional.py:584: UserWarning: At least one mel filterbank has all zero values. The value for `n_mels` (128) may be set too high. Or, the value for `n_freqs` (201) may be set too low.
+  warnings.warn(
+Epoch 0:   0%|          | 0/20 [00:00<?, ?it/s]
+/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py:85: MatplotlibDeprecationWarning: Support for FigureCanvases without a required_interactive_framework attribute was deprecated in Matplotlib 3.6 and will be removed two minor releases later.
+  plt.figure(figsize=(10, 4))
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 580, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 987, in _run
+    results = self._run_stage()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1033, in _run_stage
+    self.fit_loop.run()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py", line 205, in run
+    self.advance()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py", line 363, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 140, in run
+    self.advance(data_fetcher)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 250, in advance
+    batch_output = self.automatic_optimization.run(trainer.optimizers[0], batch_idx, kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 190, in run
+    self._optimizer_step(batch_idx, closure)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 268, in _optimizer_step
+    call._call_lightning_module_hook(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 157, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/core/module.py", line 1303, in optimizer_step
+    optimizer.step(closure=optimizer_closure)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/core/optimizer.py", line 152, in step
+    step_output = self._strategy.optimizer_step(self._optimizer, closure, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/strategies/strategy.py", line 239, in optimizer_step
+    return self.precision_plugin.optimizer_step(optimizer, model=model, closure=closure, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/plugins/precision/precision.py", line 122, in optimizer_step
+    return optimizer.step(closure=closure, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/optim/optimizer.py", line 385, in wrapper
+    out = func(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/optim/optimizer.py", line 76, in _use_grad
+    ret = func(self, *args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/optim/adam.py", line 146, in step
+    loss = closure()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/plugins/precision/precision.py", line 108, in _wrap_closure
+    closure_result = closure()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 144, in __call__
+    self._result = self.closure(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 129, in closure
+    step_output = self._step_fn()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 318, in _training_step
+    training_step_output = call._call_strategy_hook(trainer, "training_step", *kwargs.values())
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 309, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/strategies/strategy.py", line 391, in training_step
+    return self.lightning_module.training_step(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 109, in training_step
+    self.log_beats_to_wandb(predicted_spikes, y.int(), sample_index=batch_idx, step=batch_idx)
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 87, in log_beats_to_wandb
+    plt.axvline(x=beat_time, color='g', linestyle='-',
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/pyplot.py", line 2425, in axvline
+    return gca().axvline(x=x, ymin=ymin, ymax=ymax, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/axes/_axes.py", line 841, in axvline
+    self.add_line(l)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 2304, in add_line
+    self._update_line_limits(line)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 2327, in _update_line_limits
+    path = line.get_path()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/lines.py", line 1028, in get_path
+    self.recache()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/lines.py", line 659, in recache
+    x = _to_unmasked_float_array(xconv).ravel()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/cbook/__init__.py", line 1340, in _to_unmasked_float_array
+    return np.asarray(x, float)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/_tensor.py", line 1064, in __array__
+    return self.numpy().astype(dtype, copy=False)
+TypeError: can't convert mps:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.
+Traceback (most recent call last):
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 2195, in <module>
+    main()
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 2177, in main
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 1489, in run
+    return self._exec(is_module, entry_point_fn, module_name, file, globals, locals)
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 1496, in _exec
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/_pydev_imps/_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 154, in <module>
+    main()
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 150, in main
+    trainer.fit(model)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 544, in fit
+    call._call_and_handle_interrupt(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 580, in _fit_impl
+    self._run(model, ckpt_path=ckpt_path)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 987, in _run
+    results = self._run_stage()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 1033, in _run_stage
+    self.fit_loop.run()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py", line 205, in run
+    self.advance()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/fit_loop.py", line 363, in advance
+    self.epoch_loop.run(self._data_fetcher)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 140, in run
+    self.advance(data_fetcher)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/training_epoch_loop.py", line 250, in advance
+    batch_output = self.automatic_optimization.run(trainer.optimizers[0], batch_idx, kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 190, in run
+    self._optimizer_step(batch_idx, closure)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 268, in _optimizer_step
+    call._call_lightning_module_hook(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 157, in _call_lightning_module_hook
+    output = fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/core/module.py", line 1303, in optimizer_step
+    optimizer.step(closure=optimizer_closure)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/core/optimizer.py", line 152, in step
+    step_output = self._strategy.optimizer_step(self._optimizer, closure, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/strategies/strategy.py", line 239, in optimizer_step
+    return self.precision_plugin.optimizer_step(optimizer, model=model, closure=closure, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/plugins/precision/precision.py", line 122, in optimizer_step
+    return optimizer.step(closure=closure, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/optim/optimizer.py", line 385, in wrapper
+    out = func(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/optim/optimizer.py", line 76, in _use_grad
+    ret = func(self, *args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/optim/adam.py", line 146, in step
+    loss = closure()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/plugins/precision/precision.py", line 108, in _wrap_closure
+    closure_result = closure()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 144, in __call__
+    self._result = self.closure(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 129, in closure
+    step_output = self._step_fn()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/loops/optimization/automatic.py", line 318, in _training_step
+    training_step_output = call._call_strategy_hook(trainer, "training_step", *kwargs.values())
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 309, in _call_strategy_hook
+    output = fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/strategies/strategy.py", line 391, in training_step
+    return self.lightning_module.training_step(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 109, in training_step
+    self.log_beats_to_wandb(predicted_spikes, y.int(), sample_index=batch_idx, step=batch_idx)
+  File "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py", line 87, in log_beats_to_wandb
+    plt.axvline(x=beat_time, color='g', linestyle='-',
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/pyplot.py", line 2425, in axvline
+    return gca().axvline(x=x, ymin=ymin, ymax=ymax, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/axes/_axes.py", line 841, in axvline
+    self.add_line(l)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 2304, in add_line
+    self._update_line_limits(line)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/axes/_base.py", line 2327, in _update_line_limits
+    path = line.get_path()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/lines.py", line 1028, in get_path
+    self.recache()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/lines.py", line 659, in recache
+    x = _to_unmasked_float_array(xconv).ravel()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/matplotlib/cbook/__init__.py", line 1340, in _to_unmasked_float_array
+    return np.asarray(x, float)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/torch/_tensor.py", line 1064, in __array__
+    return self.numpy().astype(dtype, copy=False)
+TypeError: can't convert mps:0 device type tensor to numpy. Use Tensor.cpu() to copy the tensor to host memory first.

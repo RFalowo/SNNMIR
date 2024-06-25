@@ -1,0 +1,149 @@
+INFO:pytorch_lightning.callbacks.model_summary:
+  | Name       | Type                     | Params
+--------------------------------------------------------
+0 | S1         | LIFNode                  | 0
+1 | rsnn_block | LinearRecurrentContainer | 3.2 K
+2 | output     | Sequential               | 41
+3 | S2         | IFNode                   | 0
+--------------------------------------------------------
+3.3 K     Trainable params
+0         Non-trainable params
+3.3 K     Total params
+0.013     Total estimated model params size (MB)
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+Epoch 0:   0%|          | 0/998 [00:00<?, ?it/s]
+/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py:91: MatplotlibDeprecationWarning: Support for FigureCanvases without a required_interactive_framework attribute was deprecated in Matplotlib 3.6 and will be removed two minor releases later.
+Epoch 0:   0%|          | 0/998 [00:00<?, ?it/s] Before .cpu() - Predicted Spikes: 0, True Beats: 33
+True Beats: 0, Predicted Beats: 0
+WARNING:matplotlib.legend:No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.
+Epoch 0:   0%|          | 1/998 [03:40<61:12:09,  0.00it/s, v_num=xwau]
+Epoch 0:   0%|          | 1/998 [03:40<61:12:09,  0.00it/s, v_num=xwau]Before .cpu() - Predicted Spikes: 0, True Beats: 51
+True Beats: 0, Predicted Beats: 0
+Epoch 0:   0%|          | 2/998 [04:13<35:05:09,  0.01it/s, v_num=xwau]
+Epoch 0:   0%|          | 2/998 [04:13<35:05:09,  0.01it/s, v_num=xwau]Before .cpu() - Predicted Spikes: 0, True Beats: 76
+True Beats: 0, Predicted Beats: 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Epoch 0:  16%|█▌        | 161/998 [08:12<42:38,  0.33it/s, v_num=xwau]
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py:54: Detected KeyboardInterrupt, attempting graceful shutdown...
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/call.py", line 44, in _call_and_handle_interrupt
+    return trainer_fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 794, in _test_impl
+    results = self._run(model, ckpt_path=ckpt_path)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/trainer.py", line 937, in _run
+    _verify_loop_configurations(self)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py", line 42, in _verify_loop_configurations
+    __verify_eval_loop_configuration(model, "test")
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/configuration_validator.py", line 110, in __verify_eval_loop_configuration
+    raise MisconfigurationException(f"No `{step_name}()` method defined to run `Trainer.{trainer_method}`.")
+
