@@ -1,2 +1,0 @@
-Namespace(model='plain', device='cpu', b=1, epochs=64, j=4, data_dir='./FMnist', out_dir='./logs', resume=None, amp=False, cupy=False, opt='adam', momentum=0.9, lr=0.1)
-/Users/remi/Documents/PhD/SpikingExp/SpikingJellyTest.py

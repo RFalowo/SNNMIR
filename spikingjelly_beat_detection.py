@@ -20,28 +20,30 @@ import torchaudio
 import torchaudio.transforms as T
 import pytorch_lightning as pl
 from pytorch_lightning.callbacks import ModelCheckpoint
-from spikingjelly.activation_based import neuron, surrogate, layer, functional
+from spikingjelly.activation_based import neuron, surrogate, layer, functional, learning
 from GTZANBEAT import GTZANDataset
 from torch.utils.data import DataLoader
 from pytorch_lightning.loggers import WandbLogger
 from normalization import TEBN
+from utils.CustomOptim import f_weight
 #transfrom = T.MFCC(n_mfcc=96, melkwargs={'n_fft': 2048, 'hop_length': 512, 'n_mels': 96, 'center': False})
 # Adjust this transform according to your needs. For beat detection, Mel Spectrogram can be very useful.
 
 def get_args():
     parser = ArgumentParser(description="SNN Beat Detection")
-    parser.add_argument("--optimizer", type=str, default="adam", choices=["adam", "sgd"], help="Optimizer to use; 'adam' or 'sgd'")
+    parser.add_argument("--optimizer", type=str, default="sgd", choices=["adam", "sgd", "stdp"], help="Optimizer to use; 'adam' or 'sgd'")
     parser.add_argument("--learning_rate", type=float, default=0.1, help="Learning rate")
-    parser.add_argument("--model", type=str, default="Conv1D", choices=["Conv1D", "Linear", "RSNN"], help="Model to use; 'plain', 'stateful', or 'feedback'")
-    parser.add_argument("--epochs", type=int, default=30, help="Number of epochs")
+    parser.add_argument("--model", type=str, default="RSNN", choices=["Conv1D", "Linear", "RSNN"], help="Model to use; 'Conv1D', 'Linear', 'RSNN'")
+    parser.add_argument("--epochs", type=int, default=100, help="Number of epochs")
     parser.add_argument("--use_wandb", action="store_true", help="Use Weights & Biases for logging (default: False)")
     parser.add_argument("--encoding", type=str, default="lyon", choices=["lyon"], help="Audio encoding method (default: 'lyon')")
     parser.add_argument("--device", type=str, default="mps", help="Device to use ('cuda' or 'mps')")
     return parser.parse_args()
 
 
+
 class RSNNBeatDetection(pl.LightningModule):
-    def __init__(self, optimizer_name="adam", learning_rate=0.01, transform=None,):
+    def __init__(self, optimizer_name="sgd", learning_rate=0.01, transform=None,):
         super().__init__()
 
         self.optimizer_name = optimizer_name
@@ -49,39 +51,51 @@ class RSNNBeatDetection(pl.LightningModule):
         print(f"Transform argument: {transform}")
         self.transform = transform
 
-        self.TEBN = TEBN(96, max_timesteps=30000 ,device=torch.device('mps'))
 
 
         # Defining the RSNN architecture. Adjust sizes and parameters according to your dataset and task.
         self.S1 = nn.Sequential(
-            layer.Linear(96, 96, step_mode='m'),
-            neuron.LIFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True
-        ))
-        self.rsnn_block = layer.LinearRecurrentContainer(
+            layer.Linear(96, 96),
+            layer.BatchNorm1d(96),
+            neuron.LIFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
+
+        )
+        self.rsnn_block_1 = nn.Sequential(
+            layer.LinearRecurrentContainer(
                 neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4),
-                in_features=256,
-                out_features=128,
-                step_mode='s',            )
-             # Another spiking neuron layer
-        # self.scnn = layer.Conv1d(1,1, 3)
-        # self.AP = layer.AdaptiveAvgPool1d(2)
+                in_features=96,
+                out_features=96,
+            ),
+
+        )
         self.S2 = nn.Sequential(
-            layer.Linear(96, 96, step_mode='m'),
+            layer.Linear(96, 32, ),
+            layer.BatchNorm1d(32),
             neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
+        )
+        self.rsnn_block_2 = nn.Sequential(
+            layer.LinearRecurrentContainer(
+                neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True, v_threshold=0.4),
+                in_features=32,
+                out_features=32,
+            ),
         )
         self.S3 = nn.Sequential(
-            layer.Linear(96, 32, step_mode='m'),
-            neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
-        )
-        self.S4 = nn.Sequential(
-            layer.Linear(32, 16, step_mode='m'),
+            layer.Linear(32, 16, ),
+            layer.BatchNorm1d(16),
             neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
         )
         self.output = nn.Sequential(
-            layer.Linear(16, 1, step_mode='m'),
+            layer.Linear(16, 1, ),
             neuron.IFNode(surrogate_function=surrogate.Sigmoid(), detach_reset=True),
         )
-
+        if optimizer_name == "stdp":
+            self.stdp_learners = [learning.STDPLearner(step_mode='s', synapse=self.conv_fc[i],
+                                                       sn=self.conv_fc[i + 2], tau_pre=2.,
+                                                       tau_post=2.,
+                                                       f_pre=f_weight,
+                                                       f_post=f_weight)
+                                  for i in [0, 3, 6, 9]]
 
        #final output spiking layer with one output neuron that will spike when the network predicts a beat
 
@@ -97,22 +111,24 @@ class RSNNBeatDetection(pl.LightningModule):
         # x = torch.rand(x.shape).to(x.device)
         v = x.cpu().squeeze().detach().numpy()
         x0 = v
-        x = self.TEBN(x)
-        v = x.cpu().squeeze().detach().numpy()
+
 
         x = self.S1(x)  # First spiking layer
         # print('S1: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
-        # x = self.rsnn_block(x)  # RSNN block
+        x = self.rsnn_block_1(x)  # RSNN block
         # print ('s2: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
         x = self.S2(x)
         # print ('s3: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
+        x = self.rsnn_block_2(x)
+        # print ('s3: ',float(x.sum()), x.shape,x.min(),x.max())
+        v = x.cpu().squeeze().detach().numpy()
         x = self.S3(x)
         # print ('s4: ',float(x.sum()), x.shape,x.min(),x.max())
-        v = x.cpu().squeeze().detach().numpy()
-        x = self.S4(x)
+        #v = x.cpu().squeeze().detach().numpy()
+        #x = self.S4(x)
         # print ('s4: ',float(x.sum()), x.shape,x.min(),x.max())
         v = x.cpu().squeeze().detach().numpy()
         x = self.output(x)
@@ -128,6 +144,9 @@ class RSNNBeatDetection(pl.LightningModule):
         functional.reset_net(self.S3)
         functional.reset_net(self.S4)
         functional.reset_net(self.output)
+
+
+
         return x
 
     def log_beats_to_wandb(self, predicted_spikes, y, sample_index=0, step=None):
@@ -180,6 +199,15 @@ class RSNNBeatDetection(pl.LightningModule):
             #     self.log_beats_to_wandb(predicted_spikes, y, sample_index=batch_idx, step=batch_idx)
 
             loss = F.binary_cross_entropy_with_logits(y_hat, y)
+            if hasattr(self, 'stdp_learners'):
+                for stdp_learner in self.stdp_learners:
+                    delta_w = stdp_learner.step(on_grad=False)
+                    if delta_w is not None:
+                        if stdp_learner.synapse.weight.grad is None:
+                            stdp_learner.synapse.weight.grad = -delta_w
+                        else:
+                            stdp_learner.synapse.weight.grad -= delta_w
+
             self.log('train_loss', loss)
             return loss
 
@@ -188,6 +216,11 @@ class RSNNBeatDetection(pl.LightningModule):
             optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         elif self.optimizer_name == "sgd":
             optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.9)
+        elif self.optimizer_name == "stdp":
+            # Assign the appropriate optimizer for "stdp"
+            optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.)
+        else:
+            raise ValueError(f"Unsupported optimizer: {self.optimizer_name}")
         return optimizer
 
     def train_dataloader(self):
@@ -212,42 +245,30 @@ class Conv1DSNN(pl.LightningModule):
         self.learning_rate = learning_rate
 
         self.conv_fc = nn.Sequential(
-            layer.Conv1d(channels, channels, kernel_size=3, padding=1, bias=False),
-            layer.BatchNorm1d(channels),
-            neuron.IFNode(surrogate_function=surrogate.ATan()),
-
-            layer.Conv1d(channels, channels, kernel_size=3, padding=1, bias=False),
-            layer.BatchNorm1d(channels),
-            neuron.IFNode(surrogate_function=surrogate.ATan()),
-
-            layer.Flatten(),
-            layer.Linear(channels * 7 * 7, channels * 4 * 4, bias=False),
-            neuron.IFNode(surrogate_function=surrogate.ATan()),
-
-            layer.Linear(channels * 4 * 4, 1, bias=False),
-            neuron.IFNode(surrogate_function=surrogate.ATan()),
-        )
-        self.Conv1 = nn.Sequential(
             layer.Conv1d(channels, 64, kernel_size=3, padding=1, bias=False),
             layer.BatchNorm1d(64),
             neuron.IFNode(surrogate_function=surrogate.ATan()),
-            )
-        self.Conv2 = nn.Sequential(
+
             layer.Conv1d(64, 32, kernel_size=3, padding=1, bias=False),
             layer.BatchNorm1d(32),
             neuron.IFNode(surrogate_function=surrogate.ATan()),
-        )
-        self.Conv3 = nn.Sequential(
+
             layer.Conv1d(32, 16, kernel_size=3, padding=1, bias=False),
             layer.BatchNorm1d(16),
             neuron.IFNode(surrogate_function=surrogate.ATan()),
-        )
-        self.Output = nn.Sequential(
+
             layer.Conv1d(16, 1, kernel_size=3, padding=1, bias=False),
             layer.BatchNorm1d(1),
             neuron.IFNode(surrogate_function=surrogate.ATan())
         )
 
+        if optimizer_name == "stdp":
+            self.stdp_learners = [learning.STDPLearner(step_mode='s', synapse=self.conv_fc[i],
+                                                       sn=self.conv_fc[i + 2], tau_pre=2.,
+                                                       tau_post=2.,
+                                                       f_pre=f_weight,
+                                                       f_post=f_weight)
+                                  for i in [0, 3, 6, 9]]
 
     def forward(self, x):
         # Assuming x is initially [batch_size, channels, MFCC features, time steps]
@@ -257,20 +278,12 @@ class Conv1DSNN(pl.LightningModule):
         # Permute to put time steps first for iteration
         x = x.permute(2, 1, 0)  # Now x is [time steps, batch_size, MFCC features]
         v = x.cpu().squeeze().detach().numpy()
-        x = self.Conv1(x)
-        v = x.cpu().squeeze().detach().numpy()
-        x = self.Conv2(x)
-        v = x.cpu().squeeze().detach().numpy()
-        x = self.Conv3(x)
-        v = x.cpu().squeeze().detach().numpy()
-        x = self.Output(x)
+        x = self.conv_fc(x)
         v = x.cpu().squeeze().detach().numpy()
         x = x.squeeze(2) # Remove the last dimension
 
-        functional.reset_net(self.Conv1)
-        functional.reset_net(self.Conv2)
-        functional.reset_net(self.Conv3)
-        functional.reset_net(self.Output)
+        functional.reset_net(self.conv_fc)
+
         return x
 
     def training_step(self, batch, batch_idx):
@@ -281,6 +294,12 @@ class Conv1DSNN(pl.LightningModule):
         y_hat = self.forward(x)  # Flatten the output tensor
         loss = F.mse_loss(y_hat, y)
         self.log('train_loss', loss)
+
+        if hasattr(self, 'stdp_learners'):
+            for stdp_learner in self.stdp_learners:
+                print(f"x: {len(x)}, y: {len(y)}, trace_pre: {len(stdp_learner.trace_pre) if (stdp_learner.trace_pre  is not None) else (stdp_learner.trace_pre)}, trace_post: {len(stdp_learner.trace_post) if (stdp_learner.trace_post  is not None) else (stdp_learner.trace_post)}")
+                stdp_learner.step(on_grad=False)
+
         return loss
 
     def configure_optimizers(self):
@@ -288,6 +307,11 @@ class Conv1DSNN(pl.LightningModule):
             optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
         elif self.optimizer_name == "sgd":
             optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.9)
+        elif self.optimizer_name == "stdp":
+            # Assign the appropriate optimizer for "stdp"
+            optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.)
+        else:
+            raise ValueError(f"Unsupported optimizer: {self.optimizer_name}")
         return optimizer
 
     def train_dataloader(self):
@@ -298,7 +322,6 @@ class Conv1DSNN(pl.LightningModule):
     def val_dataloader(self):
         dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt',gaussian_width=2)
         return DataLoader(dataset, batch_size=1)
-
     def test_dataloader(self):
         dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt',gaussian_width=2)
         return DataLoader(dataset, batch_size=1)
@@ -326,7 +349,6 @@ def main():
     if args.model == "RSNN":
         model = RSNNBeatDetection(optimizer_name=args.optimizer, learning_rate=args.learning_rate, transform=transform)
         model.to(args.device)
-        model.TEBN.to(args.device)
 
     elif args.model == "Conv1D":
         model = Conv1DSNN(T=30000, channels=96, optimizer_name=args.optimizer, learning_rate=args.learning_rate)
@@ -339,7 +361,7 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=1)
     test_loader = DataLoader(test_dataset, batch_size=1)
 
-    args.use_wandb = True
+    args.use_wandb = False
 
     logger = WandbLogger(project="SNN_Beat_Detection", log_model="all") if args.use_wandb else False
     trainer = pl.Trainer(max_epochs=args.epochs, logger=logger, callbacks=[ModelCheckpoint(monitor="train_loss")], accelerator='mps', devices=1)
