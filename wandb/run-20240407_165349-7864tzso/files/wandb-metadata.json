@@ -1,0 +1,31 @@
+{
+    "os": "macOS-14.2-arm64-arm-64bit",
+    "python": "3.9.7",
+    "heartbeatAt": "2024-04-07T15:53:50.375676",
+    "startedAt": "2024-04-07T15:53:49.500389",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py",
+    "codePathLocal": "spikingjelly_beat_detection.py",
+    "codePath": "spikingjelly_beat_detection.py",
+    "host": "Oluremifalowos-MacBook-Pro.local",
+    "username": "remi",
+    "executable": "/Users/remi/Documents/PhD/NLP/SpikingExp/bin/python",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "disk": {
+        "/": {
+            "total": 460.4317207336426,
+            "used": 13.367752075195312
+        }
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

@@ -1,0 +1,98 @@
+2024-06-07 17:33:51,040 INFO    StreamThr :35203 [internal.py:wandb_internal():86] W&B internal server running at pid: 35203, started at: 2024-06-07 17:33:51.032610
+2024-06-07 17:33:51,074 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: status
+2024-06-07 17:33:51,141 INFO    WriterThread:35203 [datastore.py:open_for_write():87] open: ./wandb/run-20240607_173350-1catedix/run-1catedix.wandb
+2024-06-07 17:33:51,155 DEBUG   SenderThread:35203 [sender.py:send():379] send: header
+2024-06-07 17:33:51,201 DEBUG   SenderThread:35203 [sender.py:send():379] send: run
+2024-06-07 17:33:51,232 INFO    SenderThread:35203 [sender.py:_setup_resume():749] checking resume status for None/SNN_Beat_Detection/1catedix
+2024-06-07 17:33:55,041 INFO    SenderThread:35203 [retry.py:__call__():172] Retry attempt failed:
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 790, in urlopen
+    response = self._make_request(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 491, in _make_request
+    raise new_e
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 467, in _make_request
+    self._validate_conn(conn)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 1092, in _validate_conn
+    conn.connect()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connection.py", line 642, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connection.py", line 783, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/util/ssl_.py", line 469, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/util/ssl_.py", line 513, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 500, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 1040, in _create
+    self.do_handshake()
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 1309, in do_handshake
+    self._sslobj.do_handshake()
+ConnectionResetError: [Errno 54] Connection reset by peer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/requests/adapters.py", line 486, in send
+    resp = conn.urlopen(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 844, in urlopen
+    retries = retries.increment(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/util/retry.py", line 470, in increment
+    raise reraise(type(error), error, _stacktrace)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/util/util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 790, in urlopen
+    response = self._make_request(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 491, in _make_request
+    raise new_e
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 467, in _make_request
+    self._validate_conn(conn)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connectionpool.py", line 1092, in _validate_conn
+    conn.connect()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connection.py", line 642, in connect
+    sock_and_verified = _ssl_wrap_socket_and_match_hostname(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/connection.py", line 783, in _ssl_wrap_socket_and_match_hostname
+    ssl_sock = ssl_wrap_socket(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/util/ssl_.py", line 469, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(sock, context, tls_in_tls, server_hostname)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/urllib3/util/ssl_.py", line 513, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 500, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 1040, in _create
+    self.do_handshake()
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/ssl.py", line 1309, in do_handshake
+    self._sslobj.do_handshake()
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/lib/retry.py", line 131, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/internal/internal_api.py", line 369, in execute
+    return self.client.execute(*args, **kwargs)  # type: ignore
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/vendor/gql-0.2.0/wandb_gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/lib/gql_request.py", line 58, in execute
+    request = self.session.post(self.url, **post_args)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/requests/sessions.py", line 637, in post
+    return self.request("POST", url, data=data, json=json, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/requests/adapters.py", line 501, in send
+    raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(54, 'Connection reset by peer'))
+2024-06-07 17:33:56,221 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:01,251 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:06,270 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:11,294 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:16,316 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:21,337 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:26,354 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:31,381 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive
+2024-06-07 17:34:36,419 DEBUG   HandlerThread:35203 [handler.py:handle_request():146] handle_request: keepalive

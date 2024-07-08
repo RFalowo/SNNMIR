@@ -1,0 +1,17 @@
+INFO:pytorch_lightning.callbacks.model_summary:
+  | Name       | Type                     | Params
+--------------------------------------------------------
+0 | S1         | Sequential               | 6.4 K
+1 | rsnn_block | LinearRecurrentContainer | 30.7 K
+2 | S2         | Sequential               | 6.3 K
+3 | output     | Sequential               | 41
+--------------------------------------------------------
+43.4 K    Trainable params
+0         Non-trainable params
+43.4 K    Total params
+0.174     Total estimated model params size (MB)
+/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/pytorch_lightning/trainer/connectors/data_connector.py:441: The 'train_dataloader' does not have many workers which may be a bottleneck. Consider increasing the value of the `num_workers` argument` to `num_workers=7` in the `DataLoader` to improve performance.
+Epoch 0:   0%|          | 0/998 [00:00<?, ?it/s] input: 25720.37109375 torch.Size([1293, 1, 40]) tensor(0.1033, device='mps:0') tensor(0.9096, device='mps:0')
+S1:  25452.0 torch.Size([1293, 1, 156]) tensor(0., device='mps:0', grad_fn=<MinBackward1>) tensor(1., device='mps:0', grad_fn=<MaxBackward1>)
+s2:  12151.0 torch.Size([1293, 1, 156]) tensor(0., device='mps:0', grad_fn=<MinBackward1>) tensor(1., device='mps:0', grad_fn=<MaxBackward1>)
+s3:  2097.0 torch.Size([1293, 1, 40]) tensor(0., device='mps:0', grad_fn=<MinBackward1>) tensor(1., device='mps:0', grad_fn=<MaxBackward1>)

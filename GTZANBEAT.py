@@ -52,6 +52,14 @@ class GTZANDataset(torch.utils.data.Dataset):
                             self.max_mfcc.reshape(1, -1, 1) - self.min_mfcc.reshape(1, -1, 1) + 1e-6)
 
         item_length = transformed_data.shape[0]
+        if item_length > 20000:
+            # If the data is too long, truncate it
+            transformed_data = transformed_data[:20000]
+            item_length = 20000
+        elif item_length < 20000:
+            # If the data is too short, pad it with zeros
+            padding = torch.zeros(20000 - item_length)
+            transformed_data = torch.cat([transformed_data, padding])
 
         beat_path = self.beatfiles[idx]
         beat_tensor = torch.zeros(item_length)
@@ -75,6 +83,7 @@ class GTZANDataset(torch.utils.data.Dataset):
         max_val = torch.max(audio)
         audio = (audio - min_val) / (max_val - min_val)
         audio = audio.pow(0.5)
+
         return audio, beat_tensor
 
     def load_normalization_values(self):

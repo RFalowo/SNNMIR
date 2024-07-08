@@ -1,0 +1,82 @@
+2024-04-07 17:33:15,311 INFO    StreamThr :43709 [internal.py:wandb_internal():86] W&B internal server running at pid: 43709, started at: 2024-04-07 17:33:15.309926
+2024-04-07 17:33:15,313 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status
+2024-04-07 17:33:15,331 INFO    WriterThread:43709 [datastore.py:open_for_write():87] open: ./wandb/run-20240407_173315-ul5sxs6n/run-ul5sxs6n.wandb
+2024-04-07 17:33:15,331 DEBUG   SenderThread:43709 [sender.py:send():379] send: header
+2024-04-07 17:33:15,331 DEBUG   SenderThread:43709 [sender.py:send():379] send: run
+2024-04-07 17:33:15,335 INFO    SenderThread:43709 [sender.py:_setup_resume():749] checking resume status for None/SNN_Beat_Detection/ul5sxs6n
+2024-04-07 17:33:15,989 INFO    SenderThread:43709 [dir_watcher.py:__init__():211] watching files in: ./wandb/run-20240407_173315-ul5sxs6n/files
+2024-04-07 17:33:15,989 INFO    SenderThread:43709 [sender.py:_start_run_threads():1124] run started: ul5sxs6n with start time 1712507595.310753
+2024-04-07 17:33:16,014 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: check_version
+2024-04-07 17:33:16,015 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: check_version
+2024-04-07 17:33:16,128 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: run_start
+2024-04-07 17:33:16,138 DEBUG   HandlerThread:43709 [system_info.py:__init__():26] System info init
+2024-04-07 17:33:16,139 DEBUG   HandlerThread:43709 [system_info.py:__init__():41] System info init done
+2024-04-07 17:33:16,139 INFO    HandlerThread:43709 [system_monitor.py:start():194] Starting system monitor
+2024-04-07 17:33:16,139 INFO    SystemMonitor:43709 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-04-07 17:33:16,140 INFO    HandlerThread:43709 [system_monitor.py:probe():214] Collecting system info
+2024-04-07 17:33:16,141 DEBUG   HandlerThread:43709 [system_info.py:probe():150] Probing system
+2024-04-07 17:33:16,141 INFO    SystemMonitor:43709 [interfaces.py:start():190] Started cpu monitoring
+2024-04-07 17:33:16,144 INFO    SystemMonitor:43709 [interfaces.py:start():190] Started disk monitoring
+2024-04-07 17:33:16,144 INFO    SystemMonitor:43709 [interfaces.py:start():190] Started gpuapple monitoring
+2024-04-07 17:33:16,145 INFO    SystemMonitor:43709 [interfaces.py:start():190] Started memory monitoring
+2024-04-07 17:33:16,146 INFO    SystemMonitor:43709 [interfaces.py:start():190] Started network monitoring
+2024-04-07 17:33:16,153 DEBUG   HandlerThread:43709 [gitlib.py:_init_repo():56] git repository is invalid
+2024-04-07 17:33:16,153 DEBUG   HandlerThread:43709 [system_info.py:probe():198] Probing system done
+2024-04-07 17:33:16,153 DEBUG   HandlerThread:43709 [system_monitor.py:probe():223] {'os': 'macOS-14.2-arm64-arm-64bit', 'python': '3.9.7', 'heartbeatAt': '2024-04-07T16:33:16.141596', 'startedAt': '2024-04-07T16:33:15.297007', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py', 'codePathLocal': 'spikingjelly_beat_detection.py', 'codePath': 'spikingjelly_beat_detection.py', 'host': 'Oluremifalowos-MacBook-Pro.local', 'username': 'remi', 'executable': '/Users/remi/Documents/PhD/NLP/SpikingExp/bin/python', 'cpu_count': 8, 'cpu_count_logical': 8, 'disk': {'/': {'total': 460.4317207336426, 'used': 13.367752075195312}}, 'gpuapple': {'type': 'arm', 'vendor': 'Apple'}, 'memory': {'total': 16.0}}
+2024-04-07 17:33:16,153 INFO    HandlerThread:43709 [system_monitor.py:probe():224] Finished collecting system info
+2024-04-07 17:33:16,153 INFO    HandlerThread:43709 [system_monitor.py:probe():227] Publishing system info
+2024-04-07 17:33:16,155 INFO    HandlerThread:43709 [system_monitor.py:probe():229] Finished publishing system info
+2024-04-07 17:33:16,167 DEBUG   SenderThread:43709 [sender.py:send():379] send: files
+2024-04-07 17:33:16,168 INFO    SenderThread:43709 [sender.py:_save_file():1390] saving file wandb-metadata.json with policy now
+2024-04-07 17:33:16,512 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: python_packages
+2024-04-07 17:33:16,512 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: python_packages
+2024-04-07 17:33:16,513 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-07 17:33:16,513 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: stop_status
+2024-04-07 17:33:16,516 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-07 17:33:16,701 DEBUG   SenderThread:43709 [sender.py:send():379] send: telemetry
+2024-04-07 17:33:16,701 DEBUG   SenderThread:43709 [sender.py:send():379] send: metric
+2024-04-07 17:33:16,701 DEBUG   SenderThread:43709 [sender.py:send():379] send: telemetry
+2024-04-07 17:33:16,702 DEBUG   SenderThread:43709 [sender.py:send():379] send: metric
+2024-04-07 17:33:16,702 WARNING SenderThread:43709 [sender.py:send_metric():1341] Seen metric with glob (shouldn't happen)
+2024-04-07 17:33:16,740 INFO    wandb-upload_0:43709 [upload_job.py:push():131] Uploaded file /var/folders/cx/hd2bhctj5_d534qbsd1yhspm0000gn/T/tmpbp2gsm79wandb/6l8kszsu-wandb-metadata.json
+2024-04-07 17:33:17,004 INFO    Thread-16 :43709 [dir_watcher.py:_on_file_created():271] file/dir created: ./wandb/run-20240407_173315-ul5sxs6n/files/wandb-metadata.json
+2024-04-07 17:33:17,005 INFO    Thread-16 :43709 [dir_watcher.py:_on_file_created():271] file/dir created: ./wandb/run-20240407_173315-ul5sxs6n/files/requirements.txt
+2024-04-07 17:33:17,006 INFO    Thread-16 :43709 [dir_watcher.py:_on_file_created():271] file/dir created: ./wandb/run-20240407_173315-ul5sxs6n/files/output.log
+2024-04-07 17:33:19,005 INFO    Thread-16 :43709 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240407_173315-ul5sxs6n/files/output.log
+2024-04-07 17:33:20,949 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:33:25,969 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:33:30,988 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:33:31,518 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-07 17:33:31,518 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: stop_status
+2024-04-07 17:33:31,525 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-07 17:33:36,720 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:33:41,744 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:33:46,521 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-07 17:33:46,522 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: stop_status
+2024-04-07 17:33:46,527 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-07 17:33:47,492 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:33:48,126 INFO    Thread-16 :43709 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240407_173315-ul5sxs6n/files/config.yaml
+2024-04-07 17:33:49,132 INFO    Thread-16 :43709 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240407_173315-ul5sxs6n/files/output.log
+2024-04-07 17:33:52,685 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:33:57,709 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:01,526 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-07 17:34:01,528 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: stop_status
+2024-04-07 17:34:01,535 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-07 17:34:02,782 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:07,800 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:12,818 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:16,148 DEBUG   SystemMonitor:43709 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-04-07 17:34:16,150 DEBUG   SenderThread:43709 [sender.py:send():379] send: telemetry
+2024-04-07 17:34:16,153 DEBUG   SenderThread:43709 [sender.py:send():379] send: stats
+2024-04-07 17:34:16,529 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-07 17:34:16,530 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: stop_status
+2024-04-07 17:34:16,538 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-07 17:34:17,918 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:18,260 INFO    Thread-16 :43709 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240407_173315-ul5sxs6n/files/config.yaml
+2024-04-07 17:34:23,116 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:28,138 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:31,532 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-07 17:34:31,532 DEBUG   SenderThread:43709 [sender.py:send_request():406] send_request: stop_status
+2024-04-07 17:34:31,539 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-07 17:34:33,777 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report
+2024-04-07 17:34:38,789 DEBUG   HandlerThread:43709 [handler.py:handle_request():146] handle_request: status_report

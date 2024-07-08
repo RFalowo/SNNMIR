@@ -1,0 +1,263 @@
+2024-04-04 14:45:18,116 INFO    StreamThr :57987 [internal.py:wandb_internal():86] W&B internal server running at pid: 57987, started at: 2024-04-04 14:45:18.115084
+2024-04-04 14:45:18,118 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status
+2024-04-04 14:45:18,135 INFO    WriterThread:57987 [datastore.py:open_for_write():87] open: ./wandb/run-20240404_144518-88euq4pm/run-88euq4pm.wandb
+2024-04-04 14:45:18,135 DEBUG   SenderThread:57987 [sender.py:send():379] send: header
+2024-04-04 14:45:18,135 DEBUG   SenderThread:57987 [sender.py:send():379] send: run
+2024-04-04 14:45:18,139 INFO    SenderThread:57987 [sender.py:_setup_resume():749] checking resume status for None/SNN_Beat_Detection/88euq4pm
+2024-04-04 14:45:18,785 INFO    SenderThread:57987 [dir_watcher.py:__init__():211] watching files in: ./wandb/run-20240404_144518-88euq4pm/files
+2024-04-04 14:45:18,785 INFO    SenderThread:57987 [sender.py:_start_run_threads():1124] run started: 88euq4pm with start time 1712238318.116278
+2024-04-04 14:45:18,810 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: check_version
+2024-04-04 14:45:18,810 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: check_version
+2024-04-04 14:45:18,912 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: run_start
+2024-04-04 14:45:18,922 DEBUG   HandlerThread:57987 [system_info.py:__init__():26] System info init
+2024-04-04 14:45:18,923 DEBUG   HandlerThread:57987 [system_info.py:__init__():41] System info init done
+2024-04-04 14:45:18,923 INFO    HandlerThread:57987 [system_monitor.py:start():194] Starting system monitor
+2024-04-04 14:45:18,923 INFO    SystemMonitor:57987 [system_monitor.py:_start():158] Starting system asset monitoring threads
+2024-04-04 14:45:18,923 INFO    HandlerThread:57987 [system_monitor.py:probe():214] Collecting system info
+2024-04-04 14:45:18,925 DEBUG   HandlerThread:57987 [system_info.py:probe():150] Probing system
+2024-04-04 14:45:18,925 INFO    SystemMonitor:57987 [interfaces.py:start():190] Started cpu monitoring
+2024-04-04 14:45:18,926 INFO    SystemMonitor:57987 [interfaces.py:start():190] Started disk monitoring
+2024-04-04 14:45:18,928 INFO    SystemMonitor:57987 [interfaces.py:start():190] Started gpuapple monitoring
+2024-04-04 14:45:18,929 INFO    SystemMonitor:57987 [interfaces.py:start():190] Started memory monitoring
+2024-04-04 14:45:18,932 INFO    SystemMonitor:57987 [interfaces.py:start():190] Started network monitoring
+2024-04-04 14:45:18,937 DEBUG   HandlerThread:57987 [gitlib.py:_init_repo():56] git repository is invalid
+2024-04-04 14:45:18,937 DEBUG   HandlerThread:57987 [system_info.py:probe():198] Probing system done
+2024-04-04 14:45:18,937 DEBUG   HandlerThread:57987 [system_monitor.py:probe():223] {'os': 'macOS-14.2-arm64-arm-64bit', 'python': '3.9.7', 'heartbeatAt': '2024-04-04T13:45:18.925316', 'startedAt': '2024-04-04T13:45:18.101840', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': '/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py', 'codePathLocal': 'spikingjelly_beat_detection.py', 'codePath': 'spikingjelly_beat_detection.py', 'host': 'Oluremifalowos-MacBook-Pro.local', 'username': 'remi', 'executable': '/Users/remi/Documents/PhD/NLP/SpikingExp/bin/python', 'cpu_count': 8, 'cpu_count_logical': 8, 'disk': {'/': {'total': 460.4317207336426, 'used': 13.367752075195312}}, 'gpuapple': {'type': 'arm', 'vendor': 'Apple'}, 'memory': {'total': 16.0}}
+2024-04-04 14:45:18,937 INFO    HandlerThread:57987 [system_monitor.py:probe():224] Finished collecting system info
+2024-04-04 14:45:18,937 INFO    HandlerThread:57987 [system_monitor.py:probe():227] Publishing system info
+2024-04-04 14:45:18,938 INFO    HandlerThread:57987 [system_monitor.py:probe():229] Finished publishing system info
+2024-04-04 14:45:18,951 DEBUG   SenderThread:57987 [sender.py:send():379] send: files
+2024-04-04 14:45:18,951 INFO    SenderThread:57987 [sender.py:_save_file():1390] saving file wandb-metadata.json with policy now
+2024-04-04 14:45:19,287 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: python_packages
+2024-04-04 14:45:19,287 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: python_packages
+2024-04-04 14:45:19,288 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:45:19,288 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:45:19,291 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:45:19,498 DEBUG   SenderThread:57987 [sender.py:send():379] send: telemetry
+2024-04-04 14:45:19,499 DEBUG   SenderThread:57987 [sender.py:send():379] send: metric
+2024-04-04 14:45:19,499 DEBUG   SenderThread:57987 [sender.py:send():379] send: telemetry
+2024-04-04 14:45:19,499 DEBUG   SenderThread:57987 [sender.py:send():379] send: metric
+2024-04-04 14:45:19,499 WARNING SenderThread:57987 [sender.py:send_metric():1341] Seen metric with glob (shouldn't happen)
+2024-04-04 14:45:19,513 INFO    wandb-upload_0:57987 [upload_job.py:push():131] Uploaded file /var/folders/cx/hd2bhctj5_d534qbsd1yhspm0000gn/T/tmp_s6cy3jbwandb/il1fhf21-wandb-metadata.json
+2024-04-04 14:45:19,793 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_created():271] file/dir created: ./wandb/run-20240404_144518-88euq4pm/files/wandb-metadata.json
+2024-04-04 14:45:19,793 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_created():271] file/dir created: ./wandb/run-20240404_144518-88euq4pm/files/output.log
+2024-04-04 14:45:19,793 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_created():271] file/dir created: ./wandb/run-20240404_144518-88euq4pm/files/requirements.txt
+2024-04-04 14:45:21,800 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240404_144518-88euq4pm/files/output.log
+2024-04-04 14:45:23,536 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:45:28,561 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:45:33,583 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:45:34,309 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:45:34,310 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:45:34,311 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:45:39,502 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:45:44,523 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:45:49,318 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:45:49,320 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:45:49,321 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:45:49,539 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:45:49,967 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240404_144518-88euq4pm/files/config.yaml
+2024-04-04 14:45:54,752 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:45:59,766 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:04,324 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:46:04,325 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:46:04,336 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:46:05,579 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:10,599 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:15,619 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:18,957 DEBUG   SystemMonitor:57987 [system_monitor.py:_start():172] Starting system metrics aggregation loop
+2024-04-04 14:46:18,960 DEBUG   SenderThread:57987 [sender.py:send():379] send: telemetry
+2024-04-04 14:46:18,963 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:46:19,326 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:46:19,327 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:46:19,334 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:46:21,569 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:22,125 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240404_144518-88euq4pm/files/config.yaml
+2024-04-04 14:46:26,773 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:31,791 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:34,332 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:46:34,333 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:46:34,342 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:46:37,603 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:42,628 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:47,648 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:48,972 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:46:49,333 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:46:49,334 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:46:49,340 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:46:53,567 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:46:58,582 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:03,602 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:04,335 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:47:04,335 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:47:04,344 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:47:09,592 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:14,606 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:18,973 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:47:19,339 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:47:19,341 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:47:19,353 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:47:20,521 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:25,538 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:30,558 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:34,345 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:47:34,346 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:47:34,358 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:47:35,590 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:40,607 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:45,622 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:48,980 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:47:49,349 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:47:49,351 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:47:49,360 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:47:51,583 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:47:56,601 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:01,621 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:04,352 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:48:04,353 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:48:04,363 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:48:07,583 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:12,605 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:17,982 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:18,635 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240404_144518-88euq4pm/files/output.log
+2024-04-04 14:48:18,986 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:48:19,357 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:48:19,358 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:48:19,368 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:48:23,586 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:28,607 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:33,627 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:34,363 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:48:34,364 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:48:34,374 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:48:39,558 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:44,582 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:48,994 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:48:49,363 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:48:49,363 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:48:49,372 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:48:50,586 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:48:55,600 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:00,622 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:04,366 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:49:04,367 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:49:04,374 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:49:06,043 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:11,058 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:16,075 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:19,004 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:49:19,370 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:49:19,370 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:49:19,380 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:49:21,599 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:26,620 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:31,637 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:34,374 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:49:34,375 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:49:34,386 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:49:37,552 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:42,567 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:47,584 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:49,010 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:49:49,378 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:49:49,379 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:49:49,390 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:49:52,645 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:49:57,666 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:02,680 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:04,382 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:50:04,383 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:50:04,393 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:50:08,566 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:13,583 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:18,605 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:19,019 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:50:19,387 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:50:19,388 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:50:19,400 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:50:23,643 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:28,664 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:33,680 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:34,389 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:50:34,390 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:50:34,398 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:50:39,630 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:44,647 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:49,028 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:50:49,390 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:50:49,391 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:50:49,396 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:50:50,631 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:50:55,644 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:00,671 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:04,395 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:51:04,397 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:51:04,404 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:51:06,629 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:11,652 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:16,673 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:19,033 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:51:19,398 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:51:19,399 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:51:19,404 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:51:22,635 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:27,657 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:32,679 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:34,404 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:51:34,405 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:51:34,406 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:51:38,679 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:43,702 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:48,720 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:49,039 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:51:49,406 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:51:49,409 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:51:49,410 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:51:54,618 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:51:59,634 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:04,411 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:52:04,412 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:52:04,413 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:52:05,617 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:10,637 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:15,653 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:19,049 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:52:19,416 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:52:19,417 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:52:19,418 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:52:20,660 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:25,683 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:30,700 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:34,417 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:52:34,420 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:52:34,421 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:52:36,598 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:41,614 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:46,629 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:49,052 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:52:49,417 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:52:49,424 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:52:49,424 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:52:51,773 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:52:56,792 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:53:01,816 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:53:04,423 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:53:04,430 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:53:04,431 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:53:07,625 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:53:12,643 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:53:17,667 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:53:19,059 DEBUG   SenderThread:57987 [sender.py:send():379] send: stats
+2024-04-04 14:53:19,426 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: internal_messages
+2024-04-04 14:53:19,432 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: stop_status
+2024-04-04 14:53:19,434 DEBUG   SenderThread:57987 [sender.py:send_request():406] send_request: stop_status
+2024-04-04 14:53:22,677 DEBUG   HandlerThread:57987 [handler.py:handle_request():146] handle_request: status_report
+2024-04-04 14:53:23,085 ERROR   gpuapple  :57987 [gpu_apple.py:sample():81] GPU stats error: Command '['/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/bin/apple_gpu_stats', '--json']' died with <Signals.SIGINT: 2>.
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/internal/system/assets/gpu_apple.py", line 60, in sample
+    subprocess.check_output(command, universal_newlines=True)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py", line 424, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/subprocess.py", line 528, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/bin/apple_gpu_stats', '--json']' died with <Signals.SIGINT: 2>.
+2024-04-04 14:53:24,990 INFO    Thread-16 :57987 [dir_watcher.py:_on_file_modified():288] file/dir modified: ./wandb/run-20240404_144518-88euq4pm/files/output.log

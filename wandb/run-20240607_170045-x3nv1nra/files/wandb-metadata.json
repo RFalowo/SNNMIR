@@ -1,0 +1,37 @@
+{
+    "os": "macOS-14.2-arm64-arm-64bit",
+    "python": "3.9.7",
+    "heartbeatAt": "2024-06-07T16:00:46.452116",
+    "startedAt": "2024-06-07T16:00:45.515678",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py",
+    "codePathLocal": "spikingjelly_beat_detection.py",
+    "codePath": "spikingjelly_beat_detection.py",
+    "git": {
+        "remote": "https://github.com/RFalowo/SNNMIR.git",
+        "commit": "dbf2d970bbb81770ff919b2cdf0ff02374e1cd8f"
+    },
+    "email": "45524749+RFalowo@users.noreply.github.com",
+    "root": "/Users/remi/Documents/PhD/SpikingExp",
+    "host": "Oluremifalowos-MacBook-Pro.local",
+    "username": "remi",
+    "executable": "/Users/remi/Documents/PhD/NLP/SpikingExp/bin/python",
+    "cpu_count": 8,
+    "cpu_count_logical": 8,
+    "disk": {
+        "/": {
+            "total": 460.4317207336426,
+            "used": 13.402587890625
+        }
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 16.0
+    }
+}

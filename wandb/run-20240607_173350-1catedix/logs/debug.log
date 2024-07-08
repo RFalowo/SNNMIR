@@ -1,0 +1,36 @@
+2024-06-07 17:33:50,937 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Current SDK version is 0.16.6
+2024-06-07 17:33:50,942 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Configure stats pid to 35162
+2024-06-07 17:33:50,947 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Loading settings from /Users/remi/.config/wandb/settings
+2024-06-07 17:33:50,948 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Loading settings from /Users/remi/Documents/PhD/SpikingExp/wandb/settings
+2024-06-07 17:33:50,949 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Loading settings from environment variables: {}
+2024-06-07 17:33:50,950 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Applying setup settings: {'_disable_service': False}
+2024-06-07 17:33:50,951 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Inferring run settings from compute environment: {'program_relpath': 'spikingjelly_beat_detection.py', 'program_abspath': '/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py', 'program': '/Users/remi/Documents/PhD/SpikingExp/spikingjelly_beat_detection.py'}
+2024-06-07 17:33:50,952 INFO    MainThread:35162 [wandb_setup.py:_flush():76] Applying login settings: {}
+2024-06-07 17:33:50,957 INFO    MainThread:35162 [wandb_init.py:_log_setup():521] Logging user logs to ./wandb/run-20240607_173350-1catedix/logs/debug.log
+2024-06-07 17:33:50,959 INFO    MainThread:35162 [wandb_init.py:_log_setup():522] Logging internal logs to ./wandb/run-20240607_173350-1catedix/logs/debug-internal.log
+2024-06-07 17:33:50,961 INFO    MainThread:35162 [wandb_init.py:init():561] calling init triggers
+2024-06-07 17:33:50,961 INFO    MainThread:35162 [wandb_init.py:init():568] wandb.init called with sweep_config: {}
+config: {}
+2024-06-07 17:33:50,962 INFO    MainThread:35162 [wandb_init.py:init():611] starting backend
+2024-06-07 17:33:50,962 INFO    MainThread:35162 [wandb_init.py:init():615] setting up manager
+2024-06-07 17:33:50,970 INFO    MainThread:35162 [backend.py:_multiprocessing_setup():105] multiprocessing start_methods=spawn,fork,forkserver, using: spawn
+2024-06-07 17:33:51,050 INFO    MainThread:35162 [wandb_init.py:init():623] backend started and connected
+2024-06-07 17:33:51,129 INFO    MainThread:35162 [wandb_init.py:init():715] updated telemetry
+2024-06-07 17:33:51,196 INFO    MainThread:35162 [wandb_init.py:init():748] communicating run to backend with 90.0 second timeout
+2024-06-07 17:34:37,823 WARNING MainThread:35162 [wandb_init.py:init():1203] interrupted
+Traceback (most recent call last):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/wandb_init.py", line 1181, in init
+    run = wi.init()
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/wandb_init.py", line 751, in init
+    result = run_init_handle.wait(
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/lib/mailbox.py", line 283, in wait
+    found, abandoned = self._slot._get_and_clear(timeout=wait_timeout)
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/lib/mailbox.py", line 130, in _get_and_clear
+    if self._wait(timeout=timeout):
+  File "/Users/remi/Documents/PhD/NLP/SpikingExp/lib/python3.9/site-packages/wandb/sdk/lib/mailbox.py", line 126, in _wait
+    return self._event.wait(timeout=timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 574, in wait
+    signaled = self._cond.wait(timeout)
+  File "/Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/threading.py", line 316, in wait
+    gotit = waiter.acquire(True, timeout)
+KeyboardInterrupt
