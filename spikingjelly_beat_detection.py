@@ -21,7 +21,7 @@ from utils.SurroFuncs import Boxcar
 
 def get_args():
     parser = ArgumentParser(description="SNN Beat Detection")
-    parser.add_argument("--optimizer", type=str, default="sgd", choices=["adam", "sgd", "stdp"], help="Optimizer to use; 'adam' or 'sgd'")
+    parser.add_argument("--optimizer", type=str, default="stdp", choices=["adam", "sgd", "stdp"], help="Optimizer to use; 'adam' or 'sgd'")
     parser.add_argument("--learning_rate", type=float, default=0.1, help="Learning rate")
     parser.add_argument("--model", type=str, default="Linear", choices=["Conv1D", "Linear", "RSNN", "S4"], help="Model to use; 'Conv1D', 'Linear', 'RSNN'")
     parser.add_argument("--epochs", type=int, default=100, help="Number of epochs")
@@ -283,12 +283,13 @@ class RSNN(pl.LightningModule):
         return DataLoader(dataset, batch_size=self.batch_size)
 
 class Conv1DSNN(pl.LightningModule):
-    def __init__(self, T: int, channels: int, optimizer_name="adam", learning_rate=0.01):
+    def __init__(self, T: int, channels: int, optimizer_name="adam", learning_rate=0.01, transform=None):
         super().__init__()
 
         self.T = T
         self.optimizer_name = optimizer_name
         self.learning_rate = learning_rate
+        self.transform = transform
 
         self.conv_fc = nn.Sequential(
             layer.Conv1d(channels, 64, kernel_size=3, padding=1, bias=False),
@@ -373,52 +374,90 @@ class Conv1DSNN(pl.LightningModule):
         return DataLoader(dataset, batch_size=1)
 
 class LinearSNN(pl.LightningModule):
-    def __init__(self, T: int, channels: int, optimizer_name="adam", learning_rate=0.01):
+    def __init__(self, T: int, channels: int, optimizer_name="adam", learning_rate=0.01, transform=None):
         super().__init__()
 
         self.T = T
         self.optimizer_name = optimizer_name
         self.learning_rate = learning_rate
+        self.transform = transform
 
-        self.conv_fc = nn.Sequential(
+        self.L1 = nn.Sequential(
             layer.Linear(96, 64, bias=False),
-            layer.BatchNorm1d(64),
-            neuron.IFNode(surrogate_function=Boxcar()),
-
+            neuron.IFNode(surrogate_function=Boxcar(), step_mode='m'),
+        )
+        self.BN1 = layer.BatchNorm1d(64)
+        self.L2 = nn.Sequential(
             layer.Linear(64, 32, bias=False),
-            layer.BatchNorm1d(32),
-            neuron.IFNode(surrogate_function=Boxcar()),
-
+            neuron.IFNode(surrogate_function=Boxcar(), step_mode='m'),
+        )
+        self.BN2 = layer.BatchNorm1d(32)
+        self.L3 = nn.Sequential(
             layer.Linear(32, 16, bias=False),
-            layer.BatchNorm1d(16),
-            neuron.IFNode(surrogate_function=Boxcar()),
-
+            neuron.IFNode(surrogate_function=Boxcar(), step_mode='m'),
+        )
+        self.BN3 = layer.BatchNorm1d(16)
+        self.output = nn.Sequential(
             layer.Linear(16, 1, bias=False),
             layer.BatchNorm1d(1),
-            neuron.IFNode(surrogate_function=Boxcar())
+            neuron.IFNode(surrogate_function=Boxcar(), step_mode='m'),
         )
 
-        if optimizer_name == "stdp":
-            self.stdp_learners = [learning.STDPLearner(step_mode='s', synapse=self.conv_fc[i],
-                                                       sn=self.conv_fc[i + 2], tau_pre=2.,
-                                                       tau_post=2.,
-                                                       f_pre=f_weight,
-                                                       f_post=f_weight)
-                                  for i in [0, 3, 6, 9]]
+        self.layers = [self.L1, self.L2, self.L3, self.output]
 
+        if optimizer_name == "stdp":
+            self.stdp_learners = []
+            for l in self.layers:
+                self.stdp_learners.append(
+                    learning.STDPLearner(
+                        step_mode='m',
+                        synapse=l[0],  # Linear layer
+                        sn=l[1],  # IFNode
+                        tau_pre=10.,
+                        tau_post=10.,
+                        f_pre=f_weight,
+                        f_post=f_weight
+                    )
+                )
+            self.params_stdp = self.get_stdp_params()
+    def on_after_backward(self):
+        if self.optimizer_name == "stdp":
+            # Zero out the gradients for STDP learning
+            for param in self.params_stdp:
+                if param.grad is not None:
+                    param.grad.zero_()
+
+    def f_weight(x):
+        return torch.clamp(x, -1, 1.)
+    def get_stdp_params(self):
+        params_stdp = []
+        for m in self.modules():
+            if isinstance(m, (layer.Linear)):
+                for p in m.parameters():
+                    params_stdp.append(p)
+        return params_stdp
     def forward(self, x):
         # Assuming x is initially [batch_size, channels, MFCC features, time steps]
         # Remove the channels dimension if it's always 1 and not needed
         x = x.squeeze(1)  # Now x is [batch_size, MFCC features, time steps]
 
         # Permute to put time steps first for iteration
-        x = x.permute(2, 1, 0)  # Now x is [time steps, batch_size, MFCC features]
+        x = x.permute(2, 0, 1)  # Now x is [time steps, batch_size, MFCC features]
         v = x.cpu().squeeze().detach().numpy()
-        x = self.conv_fc(x)
+        x = self.L1(x)
+        x = self.BN1(x.permute(1, 2, 0)).permute(2, 0, 1)
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.L2(x)
+        x = self.BN2(x.permute(1, 2, 0)).permute(2, 0, 1)
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.L3(x)
+        x = self.BN3(x.permute(1, 2, 0)).permute(2, 0, 1)
+        v = x.cpu().squeeze().detach().numpy()
+        x = self.output(x)
         v = x.cpu().squeeze().detach().numpy()
         x = x.squeeze(2) # Remove the last dimension
 
-        functional.reset_net(self.conv_fc)
+
 
         return x
 
@@ -427,6 +466,53 @@ class LinearSNN(pl.LightningModule):
         # x = x.to(self.device)
         # y = y.to(self.device)
         y = y.permute(1, 0)
+        y_hat = self.forward(x)
+        loss = F.mse_loss(y_hat, y)
+        self.log('train_loss', loss)
+
+        if self.optimizer_name == "stdp":
+            for stdp_learner in self.stdp_learners:
+                stdp_learner.step()
+
+        functional.reset_net(self.L1)
+        functional.reset_net(self.L2)
+        functional.reset_net(self.L3)
+        functional.reset_net(self.output)
+        self.reset_stdp_learners()
+
+        return loss
+
+    def reset_stdp_learners(self):
+        if self.optimizer_name == "stdp":
+            for stdp_learner in self.stdp_learners:
+                stdp_learner.reset()
+    def configure_optimizers(self):
+        if self.optimizer_name == "adam":
+            optimizer = torch.optim.Adam(self.parameters(), lr=self.learning_rate)
+        elif self.optimizer_name == "sgd":
+            optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.9)
+        elif self.optimizer_name == "stdp":
+            optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.)
+        else:
+            raise ValueError(f"Unsupported optimizer: {self.optimizer_name}")
+        return optimizer
+
+
+    def train_dataloader(self):
+        dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt', gaussian_width=2)
+        return DataLoader(dataset, batch_size=1, shuffle=True)
+
+    def val_dataloader(self):
+        dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt', gaussian_width=2)
+        return DataLoader(dataset, batch_size=1)
+
+    def test_dataloader(self):
+        dataset = GTZANDataset(audio_dir='data/Data/genres_original', beat_dir='data/gtzan_tempo_beat/beats', transform=self.transform, normalization_file='normalizationMM_values.txt', gaussian_width=2)
+        return DataLoader(dataset, batch_size=1)
+
+
+
+
 
 
 def main():
@@ -452,11 +538,11 @@ def main():
         model = RSNN(optimizer_name=args.optimizer, learning_rate=args.learning_rate, transform=transform, batch_size=4)
         model.to(args.device)
     elif args.model == "Conv1D":
-        model = Conv1DSNN(T=30000, channels=96, optimizer_name=args.optimizer, learning_rate=args.learning_rate)
+        model = Conv1DSNN(T=30000, channels=96, optimizer_name=args.optimizer, learning_rate=args.learning_rate, transform=transform)
     elif args.model == "S4":
         model = SpikingS4BeatDetection(in_features=64, out_features=96, hidden_size=96, L=4, f_hippo=True, bias=True, neuron_type='lif', delta=0.1, learning_rate=args.learning_rate, transform=transform)
     elif args.model == "Linear":
-        model = LinearSNN(T=30000, channels=96, optimizer_name=args.optimizer, learning_rate=args.learning_rate)
+        model = LinearSNN(T=30000, channels=96, optimizer_name=args.optimizer, learning_rate=args.learning_rate, transform=transform)
 
     args.use_wandb = False
 
