@@ -23,7 +23,7 @@ def get_args():
     parser = ArgumentParser(description="SNN Beat Detection")
     parser.add_argument("--optimizer", type=str, default="stdp", choices=["adam", "sgd", "stdp"], help="Optimizer to use; 'adam' or 'sgd'")
     parser.add_argument("--learning_rate", type=float, default=0.1, help="Learning rate")
-    parser.add_argument("--model", type=str, default="Linear", choices=["Conv1D", "Linear", "RSNN", "S4"], help="Model to use; 'Conv1D', 'Linear', 'RSNN'")
+    parser.add_argument("--model", type=str, default="Conv1D", choices=["Conv1D", "Linear", "RSNN", "S4"], help="Model to use; 'Conv1D', 'Linear', 'RSNN'")
     parser.add_argument("--epochs", type=int, default=100, help="Number of epochs")
     parser.add_argument("--use_wandb", action="store_true", help="Use Weights & Biases for logging (default: False)")
     parser.add_argument("--encoding", type=str, default="lyon", choices=["lyon"], help="Audio encoding method (default: 'lyon')")
@@ -309,14 +309,37 @@ class Conv1DSNN(pl.LightningModule):
             neuron.IFNode(surrogate_function=Boxcar())
         )
 
-        if optimizer_name == "stdp":
-            self.stdp_learners = [learning.STDPLearner(step_mode='s', synapse=self.conv_fc[i],
-                                                       sn=self.conv_fc[i + 2], tau_pre=2.,
-                                                       tau_post=2.,
-                                                       f_pre=f_weight,
-                                                       f_post=f_weight)
-                                  for i in [0, 3, 6, 9]]
+        self.layers = [self.conv_fc[i:i+3] for i in range(0, len(self.conv_fc), 3)]
 
+        if optimizer_name == "stdp":
+            self.stdp_learners = []
+            for l in self.layers:
+                self.stdp_learners.append(
+                    learning.STDPLearner(
+                        step_mode='s',
+                        synapse=l[0],  # Conv1d layer
+                        sn=l[2],  # IFNode
+                        tau_pre=10.,
+                        tau_post=10.,
+                        f_pre=f_weight,
+                        f_post=f_weight
+                    )
+                )
+            self.params_stdp = self.get_stdp_params()
+
+    def on_after_backward(self):
+        if self.optimizer_name == "stdp":
+            for param in self.params_stdp:
+                if param.grad is not None:
+                    param.grad.zero_()
+
+    def get_stdp_params(self):
+        params_stdp = []
+        for m in self.modules():
+            if isinstance(m, layer.Conv1d):
+                for p in m.parameters():
+                    params_stdp.append(p)
+        return params_stdp
     def forward(self, x):
         # Assuming x is initially [batch_size, channels, MFCC features, time steps]
         # Remove the channels dimension if it's always 1 and not needed
@@ -329,7 +352,6 @@ class Conv1DSNN(pl.LightningModule):
         v = x.cpu().squeeze().detach().numpy()
         x = x.squeeze(2) # Remove the last dimension
 
-        functional.reset_net(self.conv_fc)
 
         return x
 
@@ -342,12 +364,18 @@ class Conv1DSNN(pl.LightningModule):
         loss = F.mse_loss(y_hat, y)
         self.log('train_loss', loss)
 
-        if hasattr(self, 'stdp_learners'):
+        if self.optimizer_name == "stdp":
             for stdp_learner in self.stdp_learners:
-                print(f"x: {len(x)}, y: {len(y)}, trace_pre: {len(stdp_learner.trace_pre) if (stdp_learner.trace_pre  is not None) else (stdp_learner.trace_pre)}, trace_post: {len(stdp_learner.trace_post) if (stdp_learner.trace_post  is not None) else (stdp_learner.trace_post)}")
-                stdp_learner.step(on_grad=False)
+                stdp_learner.step()
+
+        functional.reset_net(self.conv_fc)
+        self.reset_stdp_learners()
 
         return loss
+    def reset_stdp_learners(self):
+        if self.optimizer_name == "stdp":
+            for stdp_learner in self.stdp_learners:
+                stdp_learner.reset()
 
     def configure_optimizers(self):
         if self.optimizer_name == "adam":
@@ -356,7 +384,7 @@ class Conv1DSNN(pl.LightningModule):
             optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.9)
         elif self.optimizer_name == "stdp":
             # Assign the appropriate optimizer for "stdp"
-            optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.)
+            optimizer = torch.optim.SGD(self.params_stdp, lr=self.learning_rate, momentum=0.)
         else:
             raise ValueError(f"Unsupported optimizer: {self.optimizer_name}")
         return optimizer
@@ -492,7 +520,7 @@ class LinearSNN(pl.LightningModule):
         elif self.optimizer_name == "sgd":
             optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.9)
         elif self.optimizer_name == "stdp":
-            optimizer = torch.optim.SGD(self.parameters(), lr=self.learning_rate, momentum=0.)
+            optimizer = torch.optim.SGD(self.params_stdp, lr=self.learning_rate, momentum=0.)
         else:
             raise ValueError(f"Unsupported optimizer: {self.optimizer_name}")
         return optimizer
